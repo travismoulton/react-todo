@@ -1,0 +1,11 @@
+.AddTodo {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.AddTodo > * {
+  margin-top: 1rem;
+}
