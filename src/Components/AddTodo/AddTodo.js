@@ -5,6 +5,8 @@ import useHttp from "../../hooks/http";
 
 const AddTodo = (props) => {
   const [todo, setTodo] = useState("");
+  const [date, setDate] = useState("");
+  const [category, setCategory] = useState("");
   const { sendRequest } = useHttp();
 
   const addTodoHandler = (todo) => {
@@ -20,9 +22,17 @@ const AddTodo = (props) => {
     setTodo(e.target.value);
   };
 
+  const updateDateHandler = (e) => {
+    setDate(new Date(e.target.value));
+  };
+
   const submitTodoHandler = (todo) => {
     addTodoHandler({ todo });
     props.history.push("/");
+  };
+
+  const updateCategoryHandler = (e) => {
+    setCategory(e.target.value);
   };
 
   return (
@@ -32,6 +42,13 @@ const AddTodo = (props) => {
         placeholder="Todo"
         value={todo}
         onChange={updateTodoHandler}
+      />
+      <input type="date" onChange={updateDateHandler} />
+      <input
+        type="text"
+        value={category}
+        onChange={updateCategoryHandler}
+        placeholder="category"
       />
       <button onClick={() => submitTodoHandler(todo)}>Add Todo</button>
     </div>

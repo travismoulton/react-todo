@@ -9,6 +9,8 @@ const Todos = (props) => {
           key={todo.id}
           id={todo.id}
           todo={todo.todo}
+          date={todo.date}
+          category={todo.category}
           removeTodo={props.removeTodo}
         />
       ))}

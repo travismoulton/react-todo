@@ -28,7 +28,9 @@ const Todo = (props) => {
       for (const key in data) {
         loadedTodos.push({
           id: key,
-          todo: data[key].todo,
+          todo: data[key].todo.todo,
+          date: data[key].todo.date,
+          category: data[key].todo.category,
         });
       }
       setTodos(loadedTodos);
