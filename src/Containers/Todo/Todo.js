@@ -1,27 +1,26 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 
-import AddTodo from "../../Components/AddTodo/AddTodo";
 import Todos from "../../Components/Todos/Todos";
 import classes from "./Todo.module.css";
 import useHttp from "../../hooks/http";
 
 const Todo = (props) => {
   const [todos, setTodos] = useState([]);
-  const { data, sendRequest } = useHttp();
+  const { data, sendRequest, reFetch, initialFetch } = useHttp();
 
   const fetchTodos = useCallback(() => {
-    console.log("fetch");
     sendRequest(
       "https://todos-30510-default-rtdb.firebaseio.com/todos.json",
       "GET",
-      null
+      null,
+      false
     );
   }, [sendRequest]);
 
   useEffect(() => {
-    fetchTodos();
-  }, [fetchTodos]);
+    if (initialFetch || reFetch) fetchTodos();
+  }, [fetchTodos, reFetch, initialFetch]);
 
   useEffect(() => {
     if (data) {
@@ -40,8 +39,11 @@ const Todo = (props) => {
     sendRequest(
       `https://todos-30510-default-rtdb.firebaseio.com/todos/${key}.json`,
       "DELETE",
-      key
+      key,
+      false
     );
+
+    setTodos(todos.filter((todo) => todo.id !== key));
   };
 
   return (

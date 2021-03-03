@@ -1,13 +1,18 @@
 import { useReducer, useCallback } from "react";
 
-const initialState = { data: null };
+const initialState = { data: null, reFetch: false, initialFetch: true };
 
 const httpReducer = (httpState, action) => {
   switch (action.type) {
     case "SEND":
-      return { ...httpState };
+      return { ...httpState, reFetch: false };
     case "RESPONSE":
-      return { ...httpState, data: action.resData };
+      return {
+        ...httpState,
+        data: action.resData,
+        reFetch: action.reFetch,
+        initialFetch: false,
+      };
     default:
       throw new Error("Should not be reached");
   }
@@ -16,7 +21,7 @@ const httpReducer = (httpState, action) => {
 const useHttp = () => {
   const [httpState, dispatchHttp] = useReducer(httpReducer, initialState);
 
-  const sendRequest = useCallback((url, method, body) => {
+  const sendRequest = useCallback((url, method, body, reFetch) => {
     dispatchHttp({ type: "SEND" });
     fetch(url, {
       method,
@@ -27,7 +32,7 @@ const useHttp = () => {
         return res.json();
       })
       .then((resData) => {
-        dispatchHttp({ type: "RESPONSE", resData });
+        dispatchHttp({ type: "RESPONSE", resData, reFetch });
       });
 
     return;
@@ -36,6 +41,8 @@ const useHttp = () => {
   return {
     data: httpState.data,
     sendRequest,
+    reFetch: httpState.reFetch,
+    initialFetch: httpState.initialFetch,
   };
 };
 

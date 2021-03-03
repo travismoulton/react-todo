@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 
 import classes from "./AddTodo.module.css";
 import useHttp from "../../hooks/http";
@@ -11,7 +11,8 @@ const AddTodo = (props) => {
     sendRequest(
       "https://todos-30510-default-rtdb.firebaseio.com/todos.json",
       "POST",
-      JSON.stringify(todo)
+      JSON.stringify(todo),
+      true
     );
   };
 
