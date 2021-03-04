@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import AddTodoForm from "./AddTodoForm/AddTodoForm";
 import classes from "./AddTodo.module.css";
 import useHttp from "../../hooks/http";
 
@@ -35,9 +36,11 @@ const AddTodo = (props) => {
     setCategory(e.target.value);
   };
 
+  // console.log(todo);
+
   return (
     <div className={classes.AddTodo}>
-      <input
+      {/* <input
         type="text"
         placeholder="Todo"
         value={todo}
@@ -49,7 +52,8 @@ const AddTodo = (props) => {
         value={category}
         onChange={updateCategoryHandler}
         placeholder="category"
-      />
+      /> */}
+      <AddTodoForm todoValue={todo} todoOnChange={updateTodoHandler} />
       <button onClick={() => submitTodoHandler(todo)}>Add Todo</button>
     </div>
   );
