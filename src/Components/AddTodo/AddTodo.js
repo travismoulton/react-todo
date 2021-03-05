@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import AddTodoForm from "./AddTodoForm/AddTodoForm";
 import classes from "./AddTodo.module.css";
@@ -36,23 +36,14 @@ const AddTodo = (props) => {
     setCategory(e.target.value);
   };
 
-  // console.log(todo);
+  console.log("AddTodo.js, todo", todo);
+
+  useEffect(() => {
+    console.log(todo);
+  }, [todo]);
 
   return (
     <div className={classes.AddTodo}>
-      {/* <input
-        type="text"
-        placeholder="Todo"
-        value={todo}
-        onChange={updateTodoHandler}
-      />
-      <input type="date" onChange={updateDateHandler} />
-      <input
-        type="text"
-        value={category}
-        onChange={updateCategoryHandler}
-        placeholder="category"
-      /> */}
       <AddTodoForm todoValue={todo} todoOnChange={updateTodoHandler} />
       <button onClick={() => submitTodoHandler(todo)}>Add Todo</button>
     </div>
@@ -60,3 +51,19 @@ const AddTodo = (props) => {
 };
 
 export default AddTodo;
+
+// {
+//   /* <input
+//         type="text"
+//         placeholder="Todo"
+//         value={todo}
+//         onChange={updateTodoHandler}
+//       />
+//       <input type="date" onChange={updateDateHandler} />
+//       <input
+//         type="text"
+//         value={category}
+//         onChange={updateCategoryHandler}
+//         placeholder="category"
+//       /> */
+// }

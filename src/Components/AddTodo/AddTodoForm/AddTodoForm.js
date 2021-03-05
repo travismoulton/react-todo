@@ -2,44 +2,49 @@ import React, { Component, Fragment } from "react";
 import Input from "../../UI/Input/Input";
 
 class AddTodoForm extends Component {
-  state = {
-    form: {
-      todo: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "Todo",
+  constructor(props) {
+    super(props);
+    this.state = {
+      form: {
+        todo: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Todo",
+          },
+          value: this.props.todoValue,
+          changed: this.props.todoOnChange,
+          validation: {
+            required: true,
+          },
         },
         value: this.props.todoValue,
-        changed: this.props.todoOnChange,
-        validation: {
-          required: true,
-        },
+        // date: {
+        //   elementType: "input",
+        //   elementConfig: {
+        //     type: "date",
+        //   },
+        //   value: "",
+        //   validation: {
+        //     required: false,
+        //   },
+        // },
+        // category: {
+        //   elementType: "select",
+        //   elementConfig: {
+        //     options: [
+        //       { value: "", displayValue: "" },
+        //       { value: "#addNewCategory", displayValue: "Add a new category" },
+        //     ],
+        //   },
+        // },
       },
-      // date: {
-      //   elementType: "input",
-      //   elementConfig: {
-      //     type: "date",
-      //   },
-      //   value: "",
-      //   validation: {
-      //     required: false,
-      //   },
-      // },
-      // category: {
-      //   elementType: "select",
-      //   elementConfig: {
-      //     options: [
-      //       { value: "", displayValue: "" },
-      //       { value: "#addNewCategory", displayValue: "Add a new category" },
-      //     ],
-      //   },
-      // },
-    },
-  };
+    };
+  }
 
   render() {
-    console.log(this.props.todoValue);
+    console.log("this.state", this.state);
+    console.log("this.props.value", this.props.todoValue);
     const formArr = [];
     for (const key in this.state.form) {
       formArr.push({
@@ -51,7 +56,7 @@ class AddTodoForm extends Component {
     let form = (
       <form>
         {formArr.map((el) => {
-          console.log(el.config.value);
+          console.log("el.config.value", el.config.value);
           return (
             <Input
               elementType={el.config.elementType}

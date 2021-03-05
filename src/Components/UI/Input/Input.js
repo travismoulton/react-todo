@@ -10,7 +10,6 @@ const Input = (props) => {
           onChange={props.changed}
         />
       );
-
       break;
     case "select":
       inputElement = (
