@@ -18,33 +18,62 @@ class AddTodoForm extends Component {
             required: true,
           },
         },
-        value: this.props.todoValue,
-        // date: {
-        //   elementType: "input",
-        //   elementConfig: {
-        //     type: "date",
-        //   },
-        //   value: "",
-        //   validation: {
-        //     required: false,
-        //   },
-        // },
-        // category: {
-        //   elementType: "select",
-        //   elementConfig: {
-        //     options: [
-        //       { value: "", displayValue: "" },
-        //       { value: "#addNewCategory", displayValue: "Add a new category" },
-        //     ],
-        //   },
-        // },
+        date: {
+          elementType: "input",
+          elementConfig: {
+            type: "date",
+          },
+          value: this.props.dateValue,
+          changed: this.props.dateOnChange,
+          validation: {
+            required: false,
+          },
+        },
+        category: {
+          elementType: "select",
+          elementConfig: {
+            options: [
+              { value: "", displayValue: "" },
+              { value: "#addNewCategory", displayValue: "Add a new category" },
+            ],
+          },
+          value: this.props.categoryValue,
+          changed: this.props.categoryOnChange,
+        },
       },
     };
   }
 
+  componentDidUpdate() {
+    if (this.props.todoValue !== this.state.form.todo.value)
+      this.updateState("todo");
+
+    if (this.props.dateValue !== this.state.form.date.value)
+      this.updateState("date");
+
+    if (this.props.categoryValue !== this.state.form.category.value)
+      this.updateState("category");
+  }
+
+  updateState = (formEl) => {
+    let newValue;
+    if (formEl === "todo") newValue = this.props.todoValue;
+    if (formEl === "date") newValue = this.props.dateValue;
+    if (formEl === "category") newValue = this.props.categoryValue;
+
+    this.setState((prevState) => ({
+      ...prevState,
+      form: {
+        ...prevState.form,
+        [formEl]: {
+          ...prevState.form[formEl],
+          value: newValue,
+        },
+      },
+    }));
+  };
+
   render() {
-    console.log("this.state", this.state);
-    console.log("this.props.value", this.props.todoValue);
     const formArr = [];
     for (const key in this.state.form) {
       formArr.push({
@@ -56,7 +85,6 @@ class AddTodoForm extends Component {
     let form = (
       <form>
         {formArr.map((el) => {
-          console.log("el.config.value", el.config.value);
           return (
             <Input
               elementType={el.config.elementType}

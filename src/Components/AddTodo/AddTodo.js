@@ -10,11 +10,11 @@ const AddTodo = (props) => {
   const [category, setCategory] = useState("");
   const { sendRequest } = useHttp();
 
-  const addTodoHandler = (todo) => {
+  const addTodoHandler = (todoItem) => {
     sendRequest(
       "https://todos-30510-default-rtdb.firebaseio.com/todos.json",
       "POST",
-      JSON.stringify(todo),
+      JSON.stringify(todoItem),
       true
     );
   };
@@ -24,11 +24,11 @@ const AddTodo = (props) => {
   };
 
   const updateDateHandler = (e) => {
-    setDate(new Date(e.target.value));
+    setDate(new Date(e.target.value).toISOString().substr(0, 10));
   };
 
-  const submitTodoHandler = (todo) => {
-    addTodoHandler({ todo });
+  const submitTodoHandler = () => {
+    addTodoHandler({ todo, date, category });
     props.history.push("/");
   };
 
@@ -36,34 +36,19 @@ const AddTodo = (props) => {
     setCategory(e.target.value);
   };
 
-  console.log("AddTodo.js, todo", todo);
-
-  useEffect(() => {
-    console.log(todo);
-  }, [todo]);
-
   return (
     <div className={classes.AddTodo}>
-      <AddTodoForm todoValue={todo} todoOnChange={updateTodoHandler} />
+      <AddTodoForm
+        todoValue={todo}
+        todoOnChange={updateTodoHandler}
+        dateValue={date}
+        dateOnChange={updateDateHandler}
+        categoryValue={category}
+        categoryOnChange={updateCategoryHandler}
+      />
       <button onClick={() => submitTodoHandler(todo)}>Add Todo</button>
     </div>
   );
 };
 
 export default AddTodo;
-
-// {
-//   /* <input
-//         type="text"
-//         placeholder="Todo"
-//         value={todo}
-//         onChange={updateTodoHandler}
-//       />
-//       <input type="date" onChange={updateDateHandler} />
-//       <input
-//         type="text"
-//         value={category}
-//         onChange={updateCategoryHandler}
-//         placeholder="category"
-//       /> */
-// }

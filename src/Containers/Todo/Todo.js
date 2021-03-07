@@ -25,12 +25,13 @@ const Todo = (props) => {
   useEffect(() => {
     if (data) {
       const loadedTodos = [];
+      console.log(data);
       for (const key in data) {
         loadedTodos.push({
           id: key,
-          todo: data[key].todo.todo,
-          date: data[key].todo.date,
-          category: data[key].todo.category,
+          todo: data[key].todo,
+          date: data[key].date,
+          category: data[key].category,
         });
       }
       setTodos(loadedTodos);
