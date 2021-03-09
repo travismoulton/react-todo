@@ -1,5 +1,10 @@
 import React, { Component, Fragment } from "react";
+
 import Input from "../../UI/Input/Input";
+import Backdrop from "../../UI/Backdrop/Backdrop";
+import Modal from "../../UI/Modal/Modal";
+import AddCategory from "../AddCategory/AddCategory";
+import classes from "./AddTodoForm.module.css";
 
 class AddTodoForm extends Component {
   constructor(props) {
@@ -83,7 +88,7 @@ class AddTodoForm extends Component {
     }
 
     let form = (
-      <form>
+      <form className={classes.AddTodoForm}>
         {formArr.map((el) => {
           return (
             <Input
@@ -98,7 +103,28 @@ class AddTodoForm extends Component {
       </form>
     );
 
-    return <Fragment>{form}</Fragment>;
+    console.log("AddTodoForm.js", this.props.show);
+
+    let backdrop = null;
+
+    if (this.props.show)
+      backdrop = (
+        <>
+          <Backdrop clicked={this.props.backdropHandler} />
+          <Modal>
+            <AddCategory />
+          </Modal>
+        </>
+      );
+
+    console.log(backdrop);
+
+    return (
+      <Fragment>
+        {backdrop}
+        {form}
+      </Fragment>
+    );
   }
 }
 

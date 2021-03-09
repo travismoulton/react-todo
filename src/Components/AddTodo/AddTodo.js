@@ -8,6 +8,7 @@ const AddTodo = (props) => {
   const [todo, setTodo] = useState("");
   const [date, setDate] = useState("");
   const [category, setCategory] = useState("");
+  const [show, setShow] = useState(false);
   const { sendRequest } = useHttp();
 
   const addTodoHandler = (todoItem) => {
@@ -34,6 +35,11 @@ const AddTodo = (props) => {
 
   const updateCategoryHandler = (e) => {
     setCategory(e.target.value);
+    if (e.target.value === "#addNewCategory") setShow(true);
+  };
+
+  const backdropStateHandler = () => {
+    setShow(false);
   };
 
   return (
@@ -45,6 +51,8 @@ const AddTodo = (props) => {
         dateOnChange={updateDateHandler}
         categoryValue={category}
         categoryOnChange={updateCategoryHandler}
+        show={show}
+        backdropHandler={backdropStateHandler}
       />
       <button onClick={() => submitTodoHandler(todo)}>Add Todo</button>
     </div>

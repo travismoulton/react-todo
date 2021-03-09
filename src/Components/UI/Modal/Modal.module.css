@@ -1,0 +1,11 @@
+.Modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 30rem;
+  width: 30rem;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  z-index: 3;
+  transform: translateX(-50%) translateY(-50%);
+}
