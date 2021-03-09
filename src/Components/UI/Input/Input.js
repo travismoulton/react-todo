@@ -17,6 +17,7 @@ const Input = (props) => {
           {...props.elementConfig}
           value={props.value}
           onChange={props.changed}
+          ref={props.ref}
         >
           {props.elementConfig.options.map((option) => (
             <option value={option.value} key={option.value}>

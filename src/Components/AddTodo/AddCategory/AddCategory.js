@@ -3,20 +3,30 @@ import { useState, useEffect } from "react";
 import Input from "../../UI/Input/Input";
 import useHttp from "../../../hooks/http";
 
-const AddCategory = () => {
+const AddCategory = (props) => {
   const [categoryValue, setCategoryValue] = useState("");
+  const { sendRequest } = useHttp();
 
-  const updateCategoryValue = (e) => {
-    setCategoryValue(e.target.value);
+  const addCategoryHandler = () => {
+    sendRequest(
+      "https://todos-30510-default-rtdb.firebaseio.com/categories.json",
+      "POST",
+      JSON.stringify({ categoryValue, displayValue: categoryValue }),
+      false
+    );
+    props.backdropHandler();
   };
 
   return (
-    <Input
-      elementType="input"
-      elementConfig={{ type: "text", placeholder: "Category Title" }}
-      value={categoryValue}
-      changed={updateCategoryValue}
-    />
+    <>
+      <Input
+        elementType="input"
+        elementConfig={{ type: "text", placeholder: "Category Title" }}
+        value={categoryValue}
+        changed={(e) => setCategoryValue(e.target.value)}
+      />
+      <button onClick={addCategoryHandler}>Add Category</button>
+    </>
   );
 };
 
