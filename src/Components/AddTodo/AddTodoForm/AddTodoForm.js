@@ -9,7 +9,6 @@ import classes from "./AddTodoForm.module.css";
 class AddTodoForm extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       form: {
         todo: {
@@ -45,11 +44,10 @@ class AddTodoForm extends Component {
           },
           value: this.props.categoryValue,
           changed: this.props.categoryOnChange,
-          ref: this.myRef,
         },
       },
       show: false,
-      addNewCategory: false,
+      fetchCategories: true,
     };
   }
 
@@ -69,7 +67,9 @@ class AddTodoForm extends Component {
     if (this.props.categoryValue !== this.state.form.category.value)
       this.updateFormState("category");
 
-    this.getCategoryOptions();
+    if (this.state.fetchCategories) this.getCategoryOptions();
+
+    console.log(this.state.form.category.value);
   }
 
   updateFormState = (formEl) => {
@@ -93,18 +93,18 @@ class AddTodoForm extends Component {
   };
 
   getCategoryOptions = async () => {
-    let {
-      form: {
-        category: {
-          elementConfig: { options },
-        },
-      },
-    } = this.state;
+    // let {
+    //   form: {
+    //     category: {
+    //       elementConfig: { options },
+    //     },
+    //   },
+    // } = this.state;
 
-    let newOptions = [];
-    options.forEach((option) => {
-      newOptions.push(option);
-    });
+    let newOptions = [
+      { value: "", displayValue: "" },
+      { value: "#addNewCategory", displayValue: "Add a new category" },
+    ];
 
     await fetch(
       "https://todos-30510-default-rtdb.firebaseio.com/categories.json",
@@ -114,31 +114,35 @@ class AddTodoForm extends Component {
     )
       .then((res) => res.json())
       .then((data) => {
-        if (Object.values(data).length + 2 !== options.length) {
-          for (const key in data) {
-            newOptions.push({
-              value: data[key].categoryValue,
-              displayValue: data[key].displayValue,
-            });
-          }
+        for (const key in data) {
+          newOptions.push({
+            value: data[key].categoryValue,
+            displayValue: data[key].displayValue,
+          });
         }
       });
 
-    if (options.length !== newOptions.length) {
-      this.setState((prevState) => ({
-        ...prevState,
-        form: {
-          ...prevState.form,
-          category: {
-            ...prevState.form.category,
-            elementConfig: {
-              ...prevState.form.category.elementConfig,
-              options: newOptions,
-            },
+    this.setState((prevState) => ({
+      ...prevState,
+      fetchCategories: false,
+      form: {
+        ...prevState.form,
+        category: {
+          ...prevState.form.category,
+          elementConfig: {
+            ...prevState.form.category.elementConfig,
+            options: newOptions,
           },
         },
-      }));
-    }
+      },
+    }));
+  };
+
+  triggerFetchCategories = () => {
+    this.setState((prevState) => ({
+      ...prevState,
+      fetchCategories: true,
+    }));
   };
 
   render() {
@@ -171,9 +175,12 @@ class AddTodoForm extends Component {
     if (this.props.show)
       backdrop = (
         <>
-          <Backdrop clicked={this.props.backdropHandler} />
+          <Backdrop clicked={this.props.closeBackdropAndResetCategory} />
           <Modal>
-            <AddCategory backdropHandler={this.props.backdropHandler} />
+            <AddCategory
+              backdropHandler={this.props.closeBackdropAndResetCategory}
+              triggerFetchCategories={this.triggerFetchCategories}
+            />
           </Modal>
         </>
       );
@@ -188,31 +195,3 @@ class AddTodoForm extends Component {
 }
 
 export default AddTodoForm;
-
-// updateShow = () => {
-//   if (
-//     this.state.form.category.value === "#addNewCategory" &&
-//     !this.state.addNewCategory
-//   ) {
-//     this.setState((prevState) => ({
-//       ...prevState,
-//       show: true,
-//       addNewCategory: true,
-//     }));
-//   }
-// };
-
-// closeBackdropOnClick = () => {
-//   this.setState((prevState) => ({
-//     ...prevState,
-//     show: false,
-//     addNewCategory: false,
-//     form: {
-//       ...prevState.form,
-//       category: {
-//         ...prevState.form.category,
-//         value: "",
-//       },
-//     },
-//   }));
-// };

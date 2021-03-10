@@ -15,6 +15,7 @@ const AddCategory = (props) => {
       false
     );
     props.backdropHandler();
+    props.triggerFetchCategories();
   };
 
   return (

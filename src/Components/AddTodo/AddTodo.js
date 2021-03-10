@@ -38,8 +38,9 @@ const AddTodo = (props) => {
     if (e.target.value === "#addNewCategory") setShow(true);
   };
 
-  const backdropStateHandler = () => {
+  const closeBackdropAndResetCategory = () => {
     setShow(false);
+    setCategory("");
   };
 
   return (
@@ -52,7 +53,7 @@ const AddTodo = (props) => {
         categoryValue={category}
         categoryOnChange={updateCategoryHandler}
         show={show}
-        backdropHandler={backdropStateHandler}
+        closeBackdropAndResetCategory={closeBackdropAndResetCategory}
       />
       <button onClick={() => submitTodoHandler(todo)}>Add Todo</button>
     </div>
