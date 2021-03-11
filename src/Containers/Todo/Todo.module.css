@@ -1,4 +1,21 @@
 .Todo {
   margin: 1rem auto;
   text-align: center;
+  border: 1px solid #eee;
+  width: 50%;
+
+  background-color: #f2f2f2;
+}
+
+.AddTodoButton {
+  text-decoration: none;
+  font-size: 1.6rem;
+  padding: 1rem;
+  border: 1px solid #eee;
+  background-color: #ff3333;
+  border-radius: 5rem;
+}
+
+.AddTodoButton:hover {
+  background-color: #ff9999;
 }

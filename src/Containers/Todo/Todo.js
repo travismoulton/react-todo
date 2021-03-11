@@ -25,7 +25,6 @@ const Todo = (props) => {
   useEffect(() => {
     if (data) {
       const loadedTodos = [];
-      console.log(data);
       for (const key in data) {
         loadedTodos.push({
           id: key,
@@ -52,7 +51,9 @@ const Todo = (props) => {
   return (
     <div className={classes.Todo}>
       <h1>Travis's Todo App</h1>
-      <Link to="/add-todo">Add Todo</Link>
+      <Link to="/add-todo" className={classes.AddTodoButton}>
+        Add Todo
+      </Link>
       <Todos todos={todos} removeTodo={removeTodoHandler} />
     </div>
   );

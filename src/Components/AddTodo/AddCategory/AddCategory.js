@@ -1,14 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import Input from "../../UI/Input/Input";
 import useHttp from "../../../hooks/http";
 
 const AddCategory = (props) => {
   const [categoryValue, setCategoryValue] = useState("");
-  const { sendRequest } = useHttp();
+  const { sendSyncRequest } = useHttp();
+  const button = useRef(null);
 
-  const addCategoryHandler = () => {
-    sendRequest(
+  const handleEnterKey = (e) => {
+    if (e.key === "Enter") button.current.click();
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleEnterKey);
+
+    return () => {
+      window.removeEventListener("keydown", handleEnterKey);
+    };
+  }, []);
+
+  const addCategoryHandler = async () => {
+    await sendSyncRequest(
       "https://todos-30510-default-rtdb.firebaseio.com/categories.json",
       "POST",
       JSON.stringify({ categoryValue, displayValue: categoryValue }),
@@ -25,8 +38,11 @@ const AddCategory = (props) => {
         elementConfig={{ type: "text", placeholder: "Category Title" }}
         value={categoryValue}
         changed={(e) => setCategoryValue(e.target.value)}
+        reference={true}
       />
-      <button onClick={addCategoryHandler}>Add Category</button>
+      <button onClick={addCategoryHandler} ref={button}>
+        Add Category
+      </button>
     </>
   );
 };

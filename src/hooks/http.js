@@ -38,9 +38,27 @@ const useHttp = () => {
     return;
   }, []);
 
+  const sendSyncRequest = useCallback(async (url, method, body, reFetch) => {
+    dispatchHttp({ type: "SEND" });
+    await fetch(url, {
+      method,
+      body,
+      headers: { "Content-type": "application/json" },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((resData) => {
+        dispatchHttp({ type: "RESPONSE", resData, reFetch });
+      });
+
+    return;
+  }, []);
+
   return {
     data: httpState.data,
     sendRequest,
+    sendSyncRequest,
     reFetch: httpState.reFetch,
     initialFetch: httpState.initialFetch,
   };

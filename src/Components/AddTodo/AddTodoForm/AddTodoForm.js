@@ -17,6 +17,7 @@ class AddTodoForm extends Component {
             type: "text",
             placeholder: "Todo",
           },
+          reference: true,
           value: this.props.todoValue,
           changed: this.props.todoOnChange,
           validation: {
@@ -28,6 +29,7 @@ class AddTodoForm extends Component {
           elementConfig: {
             type: "date",
           },
+          reference: false,
           value: this.props.dateValue,
           changed: this.props.dateOnChange,
           validation: {
@@ -42,6 +44,7 @@ class AddTodoForm extends Component {
               { value: "#addNewCategory", displayValue: "Add a new category" },
             ],
           },
+          reference: false,
           value: this.props.categoryValue,
           changed: this.props.categoryOnChange,
         },
@@ -52,12 +55,54 @@ class AddTodoForm extends Component {
   }
 
   componentDidMount() {
-    // console.log("componentDidMount");
     this.getCategoryOptions();
   }
 
+  setProperFocus = () => {
+    if (this.props.show && this.state.form.todo.reference) {
+      this.setState((prevState) => ({
+        ...prevState,
+        form: {
+          ...prevState.form,
+          todo: {
+            ...prevState.form.todo,
+            reference: false,
+          },
+        },
+      }));
+    }
+    if (
+      !this.props.show &&
+      !this.state.form.todo.reference &&
+      !this.state.form.todo.value
+    ) {
+      this.setState((prevState) => ({
+        ...prevState,
+        form: {
+          ...prevState.form,
+          todo: {
+            ...prevState.form.todo,
+            reference: true,
+          },
+        },
+      }));
+    }
+
+    if (this.state.form.todo.value && this.state.form.todo.reference) {
+      this.setState((prevState) => ({
+        ...prevState,
+        form: {
+          ...prevState.form,
+          todo: {
+            ...prevState.form.todo,
+            reference: false,
+          },
+        },
+      }));
+    }
+  };
+
   componentDidUpdate() {
-    // console.log("componentDidUpdate");
     if (this.props.todoValue !== this.state.form.todo.value)
       this.updateFormState("todo");
 
@@ -69,16 +114,14 @@ class AddTodoForm extends Component {
 
     if (this.state.fetchCategories) this.getCategoryOptions();
 
-    console.log(this.state.form.category.value);
+    this.setProperFocus();
   }
 
   updateFormState = (formEl) => {
     let newValue;
     if (formEl === "todo") newValue = this.props.todoValue;
     if (formEl === "date") newValue = this.props.dateValue;
-    if (formEl === "category") {
-      newValue = this.props.categoryValue;
-    }
+    if (formEl === "category") newValue = this.props.categoryValue;
 
     this.setState((prevState) => ({
       ...prevState,
@@ -93,15 +136,7 @@ class AddTodoForm extends Component {
   };
 
   getCategoryOptions = async () => {
-    // let {
-    //   form: {
-    //     category: {
-    //       elementConfig: { options },
-    //     },
-    //   },
-    // } = this.state;
-
-    let newOptions = [
+    const newOptions = [
       { value: "", displayValue: "" },
       { value: "#addNewCategory", displayValue: "Add a new category" },
     ];
@@ -164,6 +199,7 @@ class AddTodoForm extends Component {
               value={el.config.value}
               changed={el.config.changed}
               key={el.id}
+              reference={el.config.reference}
             />
           );
         })}

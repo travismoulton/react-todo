@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import AddTodoForm from "./AddTodoForm/AddTodoForm";
 import classes from "./AddTodo.module.css";
@@ -10,6 +10,7 @@ const AddTodo = (props) => {
   const [category, setCategory] = useState("");
   const [show, setShow] = useState(false);
   const { sendRequest } = useHttp();
+  const button = useRef(null);
 
   const addTodoHandler = (todoItem) => {
     sendRequest(
@@ -43,6 +44,18 @@ const AddTodo = (props) => {
     setCategory("");
   };
 
+  const handleEnterKey = (e) => {
+    if (e.key === "Enter") button.current.click();
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleEnterKey);
+    if (show) window.removeEventListener("keydown", handleEnterKey);
+    return () => {
+      window.removeEventListener("keydown", handleEnterKey);
+    };
+  }, [show]);
+
   return (
     <div className={classes.AddTodo}>
       <AddTodoForm
@@ -55,7 +68,9 @@ const AddTodo = (props) => {
         show={show}
         closeBackdropAndResetCategory={closeBackdropAndResetCategory}
       />
-      <button onClick={() => submitTodoHandler(todo)}>Add Todo</button>
+      <button onClick={() => submitTodoHandler(todo)} ref={button}>
+        Add Todo
+      </button>
     </div>
   );
 };

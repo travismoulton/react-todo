@@ -1,8 +1,8 @@
 .TodoItem {
   font-size: 1.6rem;
-  margin: 1rem auto;
+  margin: 2rem auto;
   list-style: none;
-  border: 1px solid #eee;
-  width: 10%;
+  border: 1px solid #000;
+  width: 50%;
   padding: 1rem;
 }

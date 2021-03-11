@@ -1,5 +1,12 @@
+import { useEffect, useRef } from "react";
+
 const Input = (props) => {
   let inputElement = null;
+  let inputEl = useRef(null);
+
+  useEffect(() => {
+    props.reference && inputEl.current.focus();
+  });
 
   switch (props.elementType) {
     case "input":
@@ -8,6 +15,7 @@ const Input = (props) => {
           {...props.elementConfig}
           value={props.value}
           onChange={props.changed}
+          ref={inputEl}
         />
       );
       break;
