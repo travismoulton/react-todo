@@ -13,7 +13,7 @@ const TodoItem = (props) => {
         </button>
         <Link
           to={{
-            pathanme: `/edit-todo/${props.id}`,
+            pathname: `/edit-todo/${props.id}`,
             state: {
               id: props.id,
               todo: props.todo,

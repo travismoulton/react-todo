@@ -5,9 +5,11 @@ import classes from "./EditTodo.module.css";
 import useHttp from "../../../hooks/http";
 
 const EditTodo = (props) => {
-  const [todo, setTodo] = useState(props.todo);
-  const [date, setDate] = useState(props.date);
-  const [category, setCategory] = useState(props.category);
+  const [todo, setTodo] = useState(props.history.location.state.todo);
+  const [date, setDate] = useState(props.history.location.state.date);
+  const [category, setCategory] = useState(
+    props.history.location.state.category
+  );
   const [show, setShow] = useState(false);
   const { sendSyncRequest } = useHttp();
   const button = useRef(null);
@@ -30,7 +32,7 @@ const EditTodo = (props) => {
   };
 
   const submitTodoHandler = () => {
-    editTodoHandler({ todo, date, category });
+    editTodoHandler({ todo, date, category }, props.history.location.state.id);
     props.history.push("/");
   };
 
@@ -68,8 +70,8 @@ const EditTodo = (props) => {
         show={show}
         closeBackdropAndResetCategory={closeBackdropAndResetCategory}
       />
-      <button onClick={() => submitTodoHandler(todo)} ref={button}>
-        Add Todo
+      <button onClick={submitTodoHandler} ref={button}>
+        Edit Todo
       </button>
     </div>
   );

@@ -68,7 +68,7 @@ const AddTodo = (props) => {
         show={show}
         closeBackdropAndResetCategory={closeBackdropAndResetCategory}
       />
-      <button onClick={() => submitTodoHandler(todo)} ref={button}>
+      <button onClick={submitTodoHandler} ref={button}>
         Add Todo
       </button>
     </div>
