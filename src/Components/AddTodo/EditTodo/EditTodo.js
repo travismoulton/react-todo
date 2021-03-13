@@ -1,21 +1,21 @@
 import { useEffect, useState, useRef } from "react";
 
-import AddTodoForm from "./AddTodoForm/AddTodoForm";
-import classes from "./AddTodo.module.css";
-import useHttp from "../../hooks/http";
+import AddTodoForm from "../AddTodoForm/AddTodoForm";
+import classes from "./EditTodo.module.css";
+import useHttp from "../../../hooks/http";
 
-const AddTodo = (props) => {
-  const [todo, setTodo] = useState("");
-  const [date, setDate] = useState("");
-  const [category, setCategory] = useState("");
+const EditTodo = (props) => {
+  const [todo, setTodo] = useState(props.todo);
+  const [date, setDate] = useState(props.date);
+  const [category, setCategory] = useState(props.category);
   const [show, setShow] = useState(false);
   const { sendSyncRequest } = useHttp();
   const button = useRef(null);
 
-  const addTodoHandler = async (todoItem) => {
+  const editTodoHandler = async (todoItem, key) => {
     await sendSyncRequest(
-      "https://todos-30510-default-rtdb.firebaseio.com/todos.json",
-      "POST",
+      `https://todos-30510-default-rtdb.firebaseio.com/todos/${key}.json`,
+      "PUT",
       JSON.stringify(todoItem),
       true
     );
@@ -30,7 +30,7 @@ const AddTodo = (props) => {
   };
 
   const submitTodoHandler = () => {
-    addTodoHandler({ todo, date, category });
+    editTodoHandler({ todo, date, category });
     props.history.push("/");
   };
 
@@ -57,7 +57,7 @@ const AddTodo = (props) => {
   }, [show]);
 
   return (
-    <div className={classes.AddTodo}>
+    <div className={classes.EditTodo}>
       <AddTodoForm
         todoValue={todo}
         todoOnChange={updateTodoHandler}
@@ -75,4 +75,4 @@ const AddTodo = (props) => {
   );
 };
 
-export default AddTodo;
+export default EditTodo;
